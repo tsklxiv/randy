@@ -3,9 +3,12 @@ use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
 use std::collections::HashMap;
+use std::convert::Infallible;
 
+// Constants
 const PORT: u16 = 8000;
 
+// Generate random numbers from <min> to <max> using `rand` crate
 fn random(min: u16, max: u16) -> String {
     format!("{}", rand::thread_rng().gen_range(min..max))
 }
@@ -24,13 +27,10 @@ fn unique_id(length: usize) -> String {
     nanoid!(length)
 }
 
-async fn get_ip() -> Result<String, Box<dyn std::error::Error>> {
-    let resp = reqwest::get("https://httpbin.org/ip")
-        .await?
-        .json::<HashMap<String, String>>()
-        .await?;
-    println!("{:#?}", resp);
-    Ok("".to_string())
+fn get_ip() -> String {
+    let resp = reqwest::get("https://httpbin.org/ip").unwrap();
+    println!("{}", resp);
+    format!("Coming soon!")
 }
 
 fn index() -> String {
