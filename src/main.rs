@@ -2,9 +2,11 @@ use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
+use ureq::Error;
 
 // Constants
 const PORT: u16 = 8000;
+const GET_IP_URL: &'static str = "https://httpbin.org/ip";
 
 // Generate random numbers from <min> to <max> using `rand` crate
 fn random(min: u16, max: u16) -> String {
@@ -21,11 +23,25 @@ fn right_now(mode: String) -> String {
     }
 }
 
+// Return unique ID, by default length is 21
 fn unique_id(length: usize) -> String {
     nanoid!(length)
 }
 
 fn get_ip() -> String {
+    // Handling different cases where fetching the URL can failed
+    match ureq::get(GET_IP_URL).call() {
+        Ok(response) => {
+            let json: serde_json::Value = response.into_json().unwrap();
+            format!("{}", json["origin"])
+        }
+        Err(Error::Status(code, _response)) => {
+            format!("Error when scraping data from httpbin.org: Response code {}", code)
+        }
+        Err(_) => {
+            format!("Unexpected error.")
+        }
+    };
     format!("Coming soon!")
 }
 
