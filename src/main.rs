@@ -17,6 +17,14 @@ fn right_now(mode: String) -> String {
     }
 }
 
+fn unique_id(length: usize) -> String {
+    if length == 0 {
+        nanoid!()
+    } else {
+        nanoid!(length)
+    }
+}
+
 fn index() -> String {
     format!("
     Randy - Open-source, self-hosted Rust web app with a bunch of random tools
@@ -24,6 +32,7 @@ fn index() -> String {
     Tools:
         RNG: /rand/<min>/<max>
         Now: /now/<utc/local>
+        Unique ID: /id/<length> (By default length = 21)
     ")
 }
 
@@ -35,6 +44,9 @@ async fn main() {
     // GET /now/<utc/local>
     let now = warp::path!("now" / String)
         .map(|mode| right_now(mode));
+    // GET /id/<length>
+    let id = warp::path!("id" / usize)
+        .map(|length| unique_id(length));
     // GET /
     let index = warp::path::end()
         .map(index);
@@ -44,6 +56,7 @@ async fn main() {
         index
             .or(rand)
             .or(now)
+            .or(id)
     );
 
     warp::serve(routes)
