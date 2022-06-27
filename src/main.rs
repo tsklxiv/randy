@@ -2,6 +2,7 @@ use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
+use curl::easy::Easy;
 
 // Constants
 const PORT: u16 = 8000;
@@ -26,6 +27,15 @@ fn unique_id(length: usize) -> String {
 }
 
 fn get_ip() -> String {
+    let mut easy = Easy::new();
+    let mut json = String::new();
+    easy.url("https://httpbin.org/ip").unwrap();
+    easy.write_function(|data| {
+        println!("{:#?}", data);
+        Ok(data.len())
+    }).unwrap();
+    easy.perform().unwrap();
+    assert_eq!(easy.response_code().unwrap(), 200);
     format!("Coming soon!")
 }
 
