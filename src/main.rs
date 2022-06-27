@@ -6,7 +6,7 @@ fn random(min: u16, max: u16) -> String {
 }
 
 fn index() -> String {
-    format!("Services:\nRNG: /rand/<min>/<max>")
+    format!("Tools:\nRNG: /rand/<min>/<max>")
 }
 
 #[tokio::main]
@@ -14,10 +14,16 @@ async fn main() {
     // GET /rand/<min>/<max>
     let rand = warp::path!("rand" / u16 / u16)
         .map(|min, max| random(min, max));
-    let index = warp::path!("/")
+    let index = warp::path::end()
         .map(index);
 
-    warp::serve(index)
+    // Routing everything together
+    let routes = warp::get().and(
+        index
+            .or(rand)
+    );
+
+    warp::serve(routes)
         .run(([0, 0, 0, 0], 8000))
         .await;
 }
