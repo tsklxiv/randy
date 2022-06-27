@@ -14,3 +14,4 @@ nanoid = "*"
 serde_json = "1"
 ureq = { version = "*", features = ["json"] }
 log = "*"
+pretty_env_logger = "*"
