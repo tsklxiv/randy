@@ -32,25 +32,14 @@ fn unique_id(length: usize) -> String {
     nanoid!(length)
 }
 
-fn get_ip() -> String {
+fn get_ip() -> Result<String, ureq::Error> {
     // Handling different cases where fetching the URL can failed
     println!("Fetching IP address.");
-    match ureq::get(GET_IP_URL).call() {
-        Ok(response) => {
-            println!("Fetching successful!");
-            let json: serde_json::Value = response.into_json().unwrap();
-            format!("{}", json["origin"])
-        }
-        Err(Error::Status(code, _response)) => {
-            println!("Error when scraping data. Response code: {}", code);
-            format!("Error when scraping data from httpbin.org: Response code {}", code)
-        }
-        Err(_) => {
-            println!("Unexpected error. May related to IO/transport.");
-            format!("Unexpected error.")
-        }
-    };
-    format!("Coming soon!")
+    let json: serde_json::Value = ureq::get(GET_IP_URL)
+        .call()?
+        .into_json()?;
+    println!("Fetching successful!");
+    Ok(format!("{:#?}", json))
 }
 
 fn index() -> String {
@@ -88,7 +77,10 @@ async fn main() {
         .map(|| unique_id(21));
     // GET /ip/
     let ip = warp::path!("ip")
-        .map(get_ip);
+        .map(|| match get_ip() {
+            Ok(returned) => returned,
+            Err(_) => "Unexpected error.".to_string()
+        });
     // GET /
     let index = warp::path::end()
         .map(index);
