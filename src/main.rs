@@ -18,11 +18,7 @@ fn right_now(mode: String) -> String {
 }
 
 fn unique_id(length: usize) -> String {
-    if length == 0 {
-        nanoid!()
-    } else {
-        nanoid!(length)
-    }
+    nanoid!(length)
 }
 
 fn index() -> String {
@@ -32,7 +28,7 @@ fn index() -> String {
     Tools:
         RNG: /rand/<min>/<max>
         Now: /now/<utc/local>
-        Unique ID: /id/<length> (By default length = 21)
+        Unique ID: /id/<length>
     ")
 }
 
