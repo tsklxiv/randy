@@ -2,6 +2,7 @@ use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
+use std::collections::HashMap;
 
 const PORT: u16 = 8000;
 
@@ -21,6 +22,15 @@ fn right_now(mode: String) -> String {
 
 fn unique_id(length: usize) -> String {
     nanoid!(length)
+}
+
+async fn get_ip() -> Result<String, Box<dyn std::error::Error>> {
+    let resp = reqwest::get("https://httpbin.org/ip")
+        .await?
+        .json::<HashMap<String, String>>()
+        .await?;
+    println!("{:#?}", resp);
+    Ok("".to_string())
 }
 
 fn index() -> String {
@@ -54,6 +64,9 @@ async fn main() {
     // GET /id/
     let id_noparam = warp::path!("id")
         .map(|| unique_id(21));
+    // GET /ip/
+    let ip = warp::path!("ip")
+        .map(get_ip);
     // GET /
     let index = warp::path::end()
         .map(index);
@@ -64,6 +77,7 @@ async fn main() {
             .or(rand)
             .or(now)
             .or(id)
+            .or(ip)
             .or(rand_noparam)
             .or(now_noparam)
             .or(id_noparam)
