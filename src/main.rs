@@ -44,7 +44,7 @@ fn get_ip() -> Result<String, ureq::Error> {
 fn index() -> String {
     println!("The main page");
     format!("
-Randy - Open-source, self-hosted Rust web app with a bunch of random tools
+Randy - Open-source Rust web app with a bunch of random (but probably useful) tools
 ====================
 Tools:
     RNG: /rand/<min>/<max>
