@@ -2,8 +2,6 @@ use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
-use std::collections::HashMap;
-use std::convert::Infallible;
 
 // Constants
 const PORT: u16 = 8000;
@@ -28,8 +26,6 @@ fn unique_id(length: usize) -> String {
 }
 
 fn get_ip() -> String {
-    let resp = reqwest::get("https://httpbin.org/ip").unwrap();
-    println!("{}", resp);
     format!("Coming soon!")
 }
 
@@ -41,6 +37,7 @@ Tools:
     RNG: /rand/<min>/<max>
     Now: /now/<utc/local>
     Unique ID: /id/<length> (By default length is 21)
+    IP: /ip/
     ")
 }
 
