@@ -1,6 +1,7 @@
 use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
+use nanoid::nanoid;
 
 fn random(min: u16, max: u16) -> String {
     format!("{}", rand::thread_rng().gen_range(min..max))
