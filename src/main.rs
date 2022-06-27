@@ -3,7 +3,6 @@ use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
 
-const HOST: [u16; 4] = [0, 0, 0, 0];
 const PORT: u16 = 8000;
 
 fn random(min: u16, max: u16) -> String {
