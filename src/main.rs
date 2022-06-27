@@ -2,7 +2,6 @@ use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
-use ureq::Error;
 
 // Constants
 const PORT: u16 = 8000;
