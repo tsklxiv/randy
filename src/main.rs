@@ -43,7 +43,7 @@ fn get_ip() -> String {
             format!("{}", json["origin"])
         }
         Err(Error::Status(code, _response)) => {
-            warn!("Error when scraping data. Response code: {}", code)
+            warn!("Error when scraping data. Response code: {}", code);
             format!("Error when scraping data from httpbin.org: Response code {}", code)
         }
         Err(_) => {
