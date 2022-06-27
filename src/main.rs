@@ -38,7 +38,7 @@ fn get_ip() -> Result<String, ureq::Error> {
         .call()?
         .into_json()?;
     println!("Fetching successful!");
-    Ok(format!("{:#?}", json))
+    Ok(format!("{}", json["origin"]))
 }
 
 fn index() -> String {
