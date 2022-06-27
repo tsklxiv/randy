@@ -25,12 +25,12 @@ fn unique_id(length: usize) -> String {
 
 fn index() -> String {
     format!("
-    Randy - Open-source, self-hosted Rust web app with a bunch of random tools
-    ====================
-    Tools:
-        RNG: /rand/<min>/<max>
-        Now: /now/<utc/local>
-        Unique ID: /id/<length>
+Randy - Open-source, self-hosted Rust web app with a bunch of random tools
+====================
+Tools:
+    RNG: /rand/<min>/<max>
+    Now: /now/<utc/local>
+    Unique ID: /id/<length> (By default length is 21)
     ")
 }
 
