@@ -13,3 +13,4 @@ chrono = "*"
 nanoid = "*"
 serde_json = "1"
 ureq = { version = "*", features = ["json"] }
+tracing = "*"
