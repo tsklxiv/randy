@@ -3,7 +3,6 @@ use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
 use ureq::Error;
-use log::{info, trace, warn};
 
 // Constants
 const PORT: u16 = 8000;
@@ -11,43 +10,43 @@ const GET_IP_URL: &'static str = "https://httpbin.org/ip";
 
 // Generate random numbers from <min> to <max> using `rand` crate
 fn random(min: u16, max: u16) -> String {
-    trace!("Generating random number from {} to {}", min, max);
+    println!("Generating random number from {} to {}", min, max);
     format!("{}", rand::thread_rng().gen_range(min..max))
 }
 
 fn right_now(mode: String) -> String {
-    trace!("Displaying current time. Mode: {}", mode);
+    println!("Displaying current time. Mode: {}", mode);
     if mode == "utc" {
         format!("{}", Utc::now())
     } else if mode == "local" {
         format!("{}", Local::now())
     } else {
-        info!("Unknown mode requested: {}", mode);
+        println!("Unknown mode requested: {}", mode);
         "Unknown mode. Mode available is utc or local".to_string()
     }
 }
 
 // Return unique ID, by default length is 21
 fn unique_id(length: usize) -> String {
-    trace!("Generating unique ID with length {}", length);
+    println!("Generating unique ID with length {}", length);
     nanoid!(length)
 }
 
 fn get_ip() -> String {
     // Handling different cases where fetching the URL can failed
-    trace!("Fetching IP address.");
+    println!("Fetching IP address.");
     match ureq::get(GET_IP_URL).call() {
         Ok(response) => {
-            info!("Fetching successful!");
+            println!("Fetching successful!");
             let json: serde_json::Value = response.into_json().unwrap();
             format!("{}", json["origin"])
         }
         Err(Error::Status(code, _response)) => {
-            warn!("Error when scraping data. Response code: {}", code);
+            println!("Error when scraping data. Response code: {}", code);
             format!("Error when scraping data from httpbin.org: Response code {}", code)
         }
         Err(_) => {
-            warn!("Unexpected error. May related to IO/transport.");
+            println!("Unexpected error. May related to IO/transport.");
             format!("Unexpected error.")
         }
     };
@@ -55,7 +54,7 @@ fn get_ip() -> String {
 }
 
 fn index() -> String {
-    trace!("The main page");
+    println!("The main page");
     format!("
 Randy - Open-source, self-hosted Rust web app with a bunch of random tools
 ====================
