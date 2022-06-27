@@ -39,12 +39,21 @@ async fn main() {
     // GET /rand/<min>/<max>
     let rand = warp::path!("rand" / u16 / u16)
         .map(|min, max| random(min, max));
+    // GET /rand/
+    let rand_noparam = warp::path("rand")
+        .map(|| format!("Usage: /rand/<min>/<max>"));
     // GET /now/<utc/local>
     let now = warp::path!("now" / String)
         .map(|mode| right_now(mode));
+    // GET /now/
+    let now_noparam = warp::path!("now")
+        .map(|| format!("Usage: /now/<utc/local>"));
     // GET /id/<length>
     let id = warp::path!("id" / usize)
         .map(|length| unique_id(length));
+    // GET /id/
+    let id_noparam = warp::path!("id")
+        .map(|| unique_id(21));
     // GET /
     let index = warp::path::end()
         .map(index);
@@ -55,6 +64,9 @@ async fn main() {
             .or(rand)
             .or(now)
             .or(id)
+            .or(rand_noparam)
+            .or(now_noparam)
+            .or(id_noparam)
     );
     println!("Choo Choo! Listening at 0.0.0.0:{}!", PORT);
 
