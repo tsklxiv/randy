@@ -68,7 +68,6 @@ Tools:
 
 #[tokio::main]
 async fn main() {
-    pretty_env_logger::init();
     // GET /rand/<min>/<max>
     let rand = warp::path!("rand" / u16 / u16)
         .map(|min, max| random(min, max));
