@@ -17,7 +17,10 @@ fn right_now(mode: String) -> String {
 }
 
 fn index() -> String {
-    format!("Tools:
+    format!("
+    Randy - Open-source, self-hosted Rust web app with a bunch of random tools
+    ====================
+    Tools:
         RNG: /rand/<min>/<max>
         Now: /now/<utc/local>")
 }
