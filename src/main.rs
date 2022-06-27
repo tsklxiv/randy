@@ -22,7 +22,8 @@ fn index() -> String {
     ====================
     Tools:
         RNG: /rand/<min>/<max>
-        Now: /now/<utc/local>")
+        Now: /now/<utc/local>
+    ")
 }
 
 #[tokio::main]
