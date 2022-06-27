@@ -3,6 +3,9 @@ use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
 
+const HOST: [u16; 4] = [0, 0, 0, 0];
+const PORT: u16 = 8000;
+
 fn random(min: u16, max: u16) -> String {
     format!("{}", rand::thread_rng().gen_range(min..max))
 }
@@ -54,8 +57,9 @@ async fn main() {
             .or(now)
             .or(id)
     );
+    println!("Choo Choo! Listening at 0.0.0.0:{}!", PORT);
 
     warp::serve(routes)
-        .run(([0, 0, 0, 0], 8000))
+        .run(([0, 0, 0, 0], PORT))
         .await;
 }
