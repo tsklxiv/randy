@@ -52,7 +52,7 @@ fn owoify_text(text: String) -> String {
 // Solve/Simplify a math expression using the Newton API (https://newton.now.sh/)
 fn solve_math(expr: String) -> Result<String, ureq::Error> {
     println!("Solving math expression: {}", expr);
-    let result: serde_json::Value = ureq::get(&[String::from("https://newton.now.sh/api/v2/solve/"), expr].concat())
+    let result: serde_json::Value = ureq::get(&[String::from("https://newton.vercel.app/api/v2/simplify/"), expr].concat())
         .call()?
         .into_json()?;
     Ok(format!("{}", result["result"]))
