@@ -7,7 +7,6 @@ use owoify::OwOifiable;
 // Constants
 const PORT: u16 = 8000;
 const GET_IP_URL: &'static str = "https://httpbin.org/ip";
-const NEWTON_SIMPLIFY_URL: String = String::from("https://newton.now.sh/simplify/");
 
 // Generate random numbers from <min> to <max> using `rand` crate
 fn random(min: u16, max: u16) -> String {
@@ -53,7 +52,7 @@ fn owoify_text(text: String) -> String {
 // Solve/Simplify a math expression using the Newton API (https://newton.now.sh/)
 fn solve_math(expr: String) -> Result<String, ureq::Error> {
     println!("Solving math expression: {}", expr);
-    let result = ureq::get(&[NEWTON_SIMPLIFY_URL, expr].concat())
+    let result = ureq::get(&[String::from("https://newton.now/sh/solve/"), expr].concat())
         .call()?
         .into_string()?;
     Ok(result)
