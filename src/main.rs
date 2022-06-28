@@ -49,15 +49,6 @@ fn owoify_text(text: String) -> String {
     text.replace("%20", " ").replace("+", " ").owoify()
 }
 
-// Solve/Simplify a math expression using the Newton API (https://newton.now.sh/)
-fn solve_math(expr: String) -> Result<String, ureq::Error> {
-    println!("Solving math expression: {}", expr);
-    let result: serde_json::Value = ureq::get(&[String::from("https://newton.vercel.app/api/v2/simplify/"), expr].concat())
-        .call()?
-        .into_json()?;
-    Ok(format!("{}", result["result"]))
-}
-
 fn index() -> String {
     println!("The main page");
     format!("
@@ -68,7 +59,6 @@ Tools:
     Now: /now/<utc/local>
     Unique ID: /id/<length> (By default length is 21)
     Owoify: /owo/<text>
-    Solve: /solve/<expression>
     IP: /ip/
     ")
 }
@@ -102,12 +92,6 @@ async fn main() {
     // GET /owo/
     let owo = warp::path!("owo" / String)
         .map(|text| owoify_text(text));
-    // GET /solve/<expression>
-    let solve = warp::path!("solve" / String)
-        .map(|expr: String| match solve_math(expr) {
-            Ok(returned) => returned,
-            Err(_) => "Unexpected error when solving math.".to_string()
-        });
     // GET /
     let index = warp::path::end()
         .map(index);
@@ -120,7 +104,6 @@ async fn main() {
             .or(id)
             .or(ip)
             .or(owo)
-            .or(solve)
             .or(rand_noparam)
             .or(now_noparam)
             .or(id_noparam)
