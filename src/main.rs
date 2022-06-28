@@ -2,6 +2,7 @@ use warp::Filter;
 use rand::Rng;
 use chrono::prelude::*;
 use nanoid::nanoid;
+use owoify::OwOifiable;
 
 // Constants
 const PORT: u16 = 8000;
@@ -13,6 +14,7 @@ fn random(min: u16, max: u16) -> String {
     format!("{}", rand::thread_rng().gen_range(min..max))
 }
 
+// Return current time, either in UTC or local time
 fn right_now(mode: String) -> String {
     println!("Displaying current time. Mode: {}", mode);
     if mode == "utc" {
@@ -31,6 +33,8 @@ fn unique_id(length: usize) -> String {
     nanoid!(length)
 }
 
+// Get IP address.
+// This part took me almost an hour to get it right.
 fn get_ip() -> Result<String, ureq::Error> {
     // Handling different cases where fetching the URL can failed
     println!("Fetching IP address.");
@@ -39,6 +43,11 @@ fn get_ip() -> Result<String, ureq::Error> {
         .into_json()?;
     println!("Fetching successful!");
     Ok(format!("{}", json["origin"]))
+}
+
+// Owoify some text
+fn owoify_text(text: String) -> String {
+    text.owoify()
 }
 
 fn index() -> String {
@@ -51,6 +60,7 @@ Tools:
     Now: /now/<utc/local>
     Unique ID: /id/<length> (By default length is 21)
     IP: /ip/
+    Owoify: /owo/<text>
     ")
 }
 
@@ -80,6 +90,9 @@ async fn main() {
             Ok(returned) => returned,
             Err(_) => "Unexpected error.".to_string()
         });
+    // GET /owo/
+    let owo = warp::path!("owo" / String)
+        .map(|text| owoify_text(text));
     // GET /
     let index = warp::path::end()
         .map(index);
@@ -91,6 +104,7 @@ async fn main() {
             .or(now)
             .or(id)
             .or(ip)
+            .or(owo)
             .or(rand_noparam)
             .or(now_noparam)
             .or(id_noparam)
