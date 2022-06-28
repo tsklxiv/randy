@@ -16,7 +16,7 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
-![GitHub Repo stars](https://img.shields.io/github/stars/HoangTuan110/randy) [![CodeFactor](https://www.codefactor.io/repository/github/hoangtuan110/randy/badge)](https://www.codefactor.io/repository/github/hoangtuan110/randy) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/HoangTuan110/randy/Rust)
+![GitHub Repo stars](https://img.shields.io/github/stars/HoangTuan110/randy) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/HoangTuan110/randy/Rust)
 
 Randy is Rust web app with a bunch of random tools.
 
