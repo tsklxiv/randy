@@ -39,12 +39,18 @@ Contributions are welcome. If you found any bugs or want to requrest a feature, 
 
 * First, install the Rust compiler and its package manager, `cargo`, at [here](https://www.rust-lang.org/tools/install)
 * Next, clone this repo and `cd` to it:
-  `git clone https://github.com/HoangTuan110/randy`
+  ```sh
+  git clone https://github.com/HoangTuan110/randy
+  ```
 * Then, run:
-  `cargo run`
+  ```sh
+  cargo run
+  ```
   This will install all the dependencies required to run Randy and start the server.
 * Finally, you should see this message:
-  `Choo Choo! Listening at 0.0.0.0:8000!`
+  ```
+  Choo Choo! Listening at 0.0.0.0:8000!
+  ```
   Then you can start `curl`ing Randy:
   ```sh
   curl 0.0.0.0:8000/
