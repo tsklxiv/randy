@@ -7,6 +7,7 @@ use owoify::OwOifiable;
 // Constants
 const PORT: u16 = 8000;
 const GET_IP_URL: &'static str = "https://httpbin.org/ip";
+const NEWTON_SIMPLIFY_URL: String = String::from("https://newton.now.sh/simplify/");
 
 // Generate random numbers from <min> to <max> using `rand` crate
 fn random(min: u16, max: u16) -> String {
@@ -36,7 +37,6 @@ fn unique_id(length: usize) -> String {
 // Get IP address.
 // This part took me almost an hour to get it right.
 fn get_ip() -> Result<String, ureq::Error> {
-    // Handling different cases where fetching the URL can failed
     println!("Fetching IP address.");
     let json: serde_json::Value = ureq::get(GET_IP_URL)
         .call()?
@@ -50,6 +50,15 @@ fn owoify_text(text: String) -> String {
     text.replace("%20", " ").replace("+", " ").owoify()
 }
 
+// Solve/Simplify a math expression using the Newton API (https://newton.now.sh/)
+fn solve_math(expr: String) -> Result<String, ureq::Error> {
+    println!("Solving math expression: {}", expr);
+    let result = ureq::get(&[NEWTON_SIMPLIFY_URL, expr].concat())
+        .call()?
+        .into_string()?;
+    Ok(result)
+}
+
 fn index() -> String {
     println!("The main page");
     format!("
@@ -60,6 +69,7 @@ Tools:
     Now: /now/<utc/local>
     Unique ID: /id/<length> (By default length is 21)
     Owoify: /owo/<text>
+    Solve: /solve/<expression>
     IP: /ip/
     ")
 }
@@ -88,11 +98,17 @@ async fn main() {
     let ip = warp::path!("ip")
         .map(|| match get_ip() {
             Ok(returned) => returned,
-            Err(_) => "Unexpected error.".to_string()
+            Err(_) => "Unexpected error when fetching IP.".to_string()
         });
     // GET /owo/
     let owo = warp::path!("owo" / String)
         .map(|text| owoify_text(text));
+    // GET /solve/<expression>
+    let solve = warp::path!("solve" / String)
+        .map(|expr: String| match solve_math(expr) {
+            Ok(returned) => returned,
+            Err(_) => "Unexpected error when solving math.".to_string()
+        });
     // GET /
     let index = warp::path::end()
         .map(index);
@@ -105,6 +121,7 @@ async fn main() {
             .or(id)
             .or(ip)
             .or(owo)
+            .or(solve)
             .or(rand_noparam)
             .or(now_noparam)
             .or(id_noparam)
