@@ -47,7 +47,7 @@ fn get_ip() -> Result<String, ureq::Error> {
 
 // Owoify some text
 fn owoify_text(text: String) -> String {
-    text.owoify()
+    text.replace("%20", " ").replace("+", " ").owoify()
 }
 
 fn index() -> String {
