@@ -4,7 +4,6 @@
 </p>
 
 ## Table of Content
-- [Table of Content](#table-of-content)
 - [Introduction](#introduction)
 - [Features](#features)
 - [Contributions](#contributions)
