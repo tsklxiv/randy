@@ -59,8 +59,8 @@ Tools:
     RNG: /rand/<min>/<max>
     Now: /now/<utc/local>
     Unique ID: /id/<length> (By default length is 21)
-    IP: /ip/
     Owoify: /owo/<text>
+    IP: /ip/
     ")
 }
 
